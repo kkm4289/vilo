@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/rnd_lab/catkin_ws/src/MoRViLO/venv"
+set -gx VIRTUAL_ENV "/home/rnd_lab/catkin_ws/src/vilo/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

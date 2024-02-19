@@ -1,6 +1,6 @@
 """
 Kaiy Muhammad
-MoRViLO
+vilo
 frontend.py
 Frontend: Image processing and feature extraction
 """

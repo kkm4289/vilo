@@ -1,6 +1,6 @@
 """
 Kaiy Muhammad
-MoRViLO
+vilo
 backend.py
 Backend: Sensor fusion, state estimation, mapping
 """

@@ -1,0 +1,7 @@
+sudo apt-get install ros-noetic-p2os-driver
+sudo apt-get install ros-noetic-p2os-launch
+#move launch files to launch files to p2os-launch share dir
+
+# hokuyo
+
+# oakd
