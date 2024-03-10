@@ -5,3 +5,7 @@ sudo apt-get install ros-noetic-p2os-launch
 # hokuyo
 
 # oakd
+
+
+# enter mouse mode tmux
+# tmux setw -g mouse on

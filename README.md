@@ -1,4 +1,4 @@
 # vilo
-Mobile Robotic Visual-Lidar Odometry
+VIsual-Lidar Odometry
 
 Sensor payload description

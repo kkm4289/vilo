@@ -22,21 +22,23 @@
     <arg name="monoResolution"    default="720p" /> 
     <arg name="camera_param_uri"  default="package://depthai_examples/params/camera" />
 
+    <param name="$(arg tf_prefix)/robot_description"
+               command="$(find xacro)/xacro '$(find depthai_descriptions)/urdf/depthai_descr.urdf.xacro'
+                        camera_name:=$(arg tf_prefix)
+                        camera_model:=$(arg camera_model)
+                        base_frame:=$(arg base_frame)
+                        parent_frame:=$(arg parent_frame)
+                        cam_pos_x:=$(arg cam_pos_x)
+                        cam_pos_y:=$(arg cam_pos_y)
+                        cam_pos_z:=$(arg cam_pos_z)
+                        cam_roll:=$(arg cam_roll)
+                        cam_pitch:=$(arg cam_pitch)
+                        cam_yaw:=$(arg cam_yaw)"/>
    
-    <include file="$(find depthai_descriptions)/launch/urdf.launch">
-        <arg name="base_frame"      value="$(arg  base_frame)"  />
-        <arg name="parent_frame"    value="$(arg  parent_frame)"/>
-        <arg name="camera_model"    value="$(arg  camera_model)"/>
-        <arg name="tf_prefix"       value="$(arg  tf_prefix)" />
-        <arg name="cam_pos_x"       value="$(arg  cam_pos_x)"   />
-        <arg name="cam_pos_y"       value="$(arg  cam_pos_y)"   />
-        <arg name="cam_pos_z"       value="$(arg  cam_pos_z)"   />
-        <arg name="cam_roll"        value="$(arg  cam_roll)"    />
-        <arg name="cam_pitch"       value="$(arg  cam_pitch)"   />
-        <arg name="cam_yaw"         value="$(arg  cam_yaw)"     />
-    </include>
+    <node name="$(arg tf_prefix)_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" required="true">
+        <remap from="robot_description" to="$(arg tf_prefix)/robot_description"/>
+    </node>
 
-    <!-- launch-prefix="xterm -e gdb (add [- - args] without space) -->
     <node name="stereo_publisher" pkg="depthai_examples" type="stereo_node" output="screen" required="true">
         <param name="tf_prefix"        value="$(arg tf_prefix)"/>
         <param name="camera_param_uri" value="$(arg camera_param_uri)"/>
@@ -49,7 +51,6 @@
         <param name="monoResolution"   value="$(arg monoResolution)"/>
     </node>            
 
-``
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find depthai_examples)/rviz/stereoPointCloud_v1.rviz" />
 
- 
 </launch>
