@@ -1,0 +1,5 @@
+- git:
+    local-name: freenect_stack/freenect_launch
+    uri: https://github.com/ros-drivers-gbp/freenect_stack-release.git
+    version: release/melodic/freenect_launch/0.4.3-2
+
