@@ -14,7 +14,7 @@ Subscriber callback for Oak-D camera monochrome stereo
 
 
 """
-Point selection
+Point selectionsel
 - Direct dense
 - Direct sparse
 - Feature-based

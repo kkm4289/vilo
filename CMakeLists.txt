@@ -148,7 +148,7 @@ include_directories(
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
-# )
+# )param_path
 
 #############
 ## Install ##
@@ -204,3 +204,6 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+catkin_install_python(PROGRAMS src/sandbox.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
