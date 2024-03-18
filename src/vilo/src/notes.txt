@@ -9,3 +9,19 @@ sudo apt-get install ros-noetic-p2os-launch
 
 # enter mouse mode tmux
 # tmux setw -g mouse on
+
+
+3/17
+place launch file in vilo instead of sym 
+add stereo proc to launch file
+
+
+
+need
+tmux
+pip manual install
+apt install vim
+apt-get install ros-noetic-cv-bridge
+apt-get install ros-noetic-vision-opencv
+apt install magic-wormhole
+apt install git
