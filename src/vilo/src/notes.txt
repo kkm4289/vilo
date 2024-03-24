@@ -25,3 +25,35 @@ apt-get install ros-noetic-cv-bridge
 apt-get install ros-noetic-vision-opencv
 apt install magic-wormhole
 apt install git
+
+
+
+
+"""
+Point selectionsel
+- Direct dense
+- Direct sparse
+- Feature-based
+"""
+def point_selection(selection_type):
+    raise NotImplementedError("This method has not been implemented yet")
+
+
+"""
+Image alignment
+Get point correspondences
+Get transformation between two images
+Update keyframe if transformation is significant
+Get aproximate pose estimate to give to backend as initial guess
+"""
+
+"""
+Point refinement
+Elimiate points projected outside of the image
+"""
+
+
+"""
+Landmark management
+Create landmarks if alignment succeeds
+"""
