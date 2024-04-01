@@ -47,10 +47,10 @@ class Frontend:
         print("Frontend initialized")
 
     def load_calibration_from_file(self, left_right):
-        self.cam_param_path = rospy.get_param('~cam_params', 'src/vilo/cam_params')
+        self.cam_param_path = rospy.get_param('~cam_params', 'cam_params')
         self.cam_param_path = Path(self.cam_param_path+"/"+left_right+".yaml")
         if not self.cam_param_path.is_file():
-            rospy.logerr(f"{left_right} Cam param does not exist")
+            rospy.logerr(f"{self.cam_param_path} Cam param does not exist")
             exit()
         with open(self.cam_param_path, 'r') as file:
             try:

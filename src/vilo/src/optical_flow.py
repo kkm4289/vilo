@@ -1,5 +1,5 @@
 """
-Kaiy Muhammad
+Kaiy Muhammad <3
 vilo
 frontend.py
 Frontend: Image processing and feature extraction
@@ -19,13 +19,9 @@ class OpticalFlowTracker:
         self.last_timestamp = None
         self.mask = None
         self.bridge = CvBridge()
-        self.debug = False
+        self.debug = True
 
-        # params for shi tomasi corner detection 
-        self.feature_params = dict( maxCorners = 100, 
-                            qualityLevel = 0.3, 
-                            minDistance = 7, 
-                            blockSize = 7 ) 
+        self.orb = cv.ORB_create()
         
         # Parameters for lucas kanade optical flow 
         self.lk_params = dict( winSize = (15, 15), 
@@ -50,11 +46,28 @@ class OpticalFlowTracker:
             reinit = True
             cv.destroyAllWindows()
 
+        # if self.debug:
+        #     debug_frame = cv.drawKeypoints(frame, kp, None)
+        #     cv.imshow('frame', debug_frame)
+        #     cv.waitKey(1)
+
+        #     # Publish debug image
+        #     try:
+        #         ros_img = self.bridge.cv2_to_imgmsg(debug_frame, encoding='passthrough')
+        #     except CvBridgeError as e:
+        #         rospy.logerr(e)
+        #     self.debug_publisher.publish(ros_img)
+
         # if first frame
         if self.old_gray is None or reinit:
             self.old_gray = frame
-            self.prev_points = cv.goodFeaturesToTrack(self.old_gray, mask = None, **self.feature_params)
+            kp = self.orb.detect(frame, None)
+            self.prev_points = np.array([kp[i].pt for i in range(len(kp))], dtype=np.float32).reshape(-1, 1, 2)
+            # self.prev_points = cv.goodFeaturesToTrack(self.old_gray, mask = None, **self.feature_params)
             self.last_timestamp = timestamp
+        else:
+            pass
+            #TODO look for new features
 
         assert timestamp >= self.last_timestamp, "Timestamp is not newer than last frame"
 
@@ -69,10 +82,12 @@ class OpticalFlowTracker:
 
         if self.debug:
             # Draw the tracks
+            #TODO this sucks
             for i, (new, old) in enumerate(zip(good_new, good_old)):
                 a, b = new.ravel()
                 c, d = old.ravel()
-                debug_frame = frame.copy()
+                # make color
+                debug_frame = cv.cvtColor(frame.copy(), cv.COLOR_GRAY2BGR)
                 cv.line(debug_frame,(int(a),int(b)),(int(c),int(d)),(0,0,255),2)       
                 cv.imshow('frame', debug_frame)
                 cv.waitKey(1)
@@ -95,4 +110,5 @@ Epipolar Geometry: If you have stereo images, you can leverage epipolar geometry
 PnP Estimation: Use perspective-n-point (PnP) algorithms to estimate the camera's pose (position and orientation) relative to a set of 3D points reconstructed from optical flow correspondences.
 Bundle Adjustment: Perform bundle adjustment to jointly optimize camera poses and 3D point positions, considering all tracked points and their corresponding motion vectors.
     """
-    def cam_motion_estimation:
+    def cam_motion_estimation():
+        pass
