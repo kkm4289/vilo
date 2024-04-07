@@ -1,0 +1,85 @@
+<launch>
+    <arg name="camera_model"      default="OAK-D" /> <!-- 'zed' or 'zedm' -->
+    <arg name="tf_prefix"         default="oak" />
+    <arg name="mode"              default="depth" />
+    <arg name="base_frame"        default="oak-d_frame" />
+    <arg name="parent_frame"      default="oak-d-base-frame" />
+
+    <arg name="cam_pos_x"         default="0.0" /> <!-- Position respect to base frame (i.e. "base_link) -->
+    <arg name="cam_pos_y"         default="0.0" /> <!-- Position respect to base frame (i.e. "base_link) -->
+    <arg name="cam_pos_z"         default="0.0" /> <!-- Position respect to base frame (i.e. "base_link) -->
+    <arg name="cam_roll"          default="0.0" /> <!-- Orientation respect to base frame (i.e. "base_link) -->
+    <arg name="cam_pitch"         default="0.0" /> <!-- Orientation respect to base frame (i.e. "base_link) -->
+    <arg name="cam_yaw"           default="0.0" /> <!-- Orientation respect to base frame (i.e. "base_link) -->
+    
+    <arg name="confidence"        default="200" /> 
+    <arg name="LRchecktresh"      default="5" /> 
+    <arg name="lrcheck"           default="true" /> 
+    <arg name="extended"          default="false" /> 
+    <arg name="subpixel"          default="true" />
+    <arg name="monoResolution"    default="720p" /> 
+    <arg name="cam_params"  default="package://vilo/cam_params" />
+	<arg name="sonar" default="false" />
+
+    <param name="$(arg tf_prefix)/robot_description"
+               command="$(find xacro)/xacro '$(find depthai_descriptions)/urdf/depthai_descr.urdf.xacro'
+                        camera_name:=$(arg tf_prefix)
+                        camera_model:=$(arg camera_model)
+                        base_frame:=$(arg base_frame)
+                        parent_frame:=$(arg parent_frame)
+                        cam_pos_x:=$(arg cam_pos_x)
+                        cam_pos_y:=$(arg cam_pos_y)
+                        cam_pos_z:=$(arg cam_pos_z)
+                        cam_roll:=$(arg cam_roll)
+                        cam_pitch:=$(arg cam_pitch)
+                        cam_yaw:=$(arg cam_yaw)"/>
+
+	<!-- run p2os to control the pioneer -->
+	<node pkg="p2os_driver" type="p2os_driver" name="p2os_driver">
+		<param name="port" value="/dev/ttyUSB0" />
+		<param name="pulse" value="1.0" />
+	</node> 
+
+	<!-- frame -->
+    <node name="$(arg tf_prefix)_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" required="true">
+        <remap from="robot_description" to="$(arg tf_prefix)/robot_description"/>
+    </node>
+
+	<!-- stereo cam -->
+    <!-- <node name="stereo_publisher" pkg="depthai_examples" type="stereo_node" output="screen" required="true">
+        <param name="tf_prefix"        value="$(arg tf_prefix)"/>
+        <param name="cam_params" value="$(arg cam_params)"/>
+        <param name="mode"             value="$(arg mode)"/>
+        <param name="lrcheck"          value="$(arg lrcheck)"/>
+        <param name="extended"         value="$(arg extended)"/>
+        <param name="subpixel"         value="$(arg subpixel)"/>
+        <param name="confidence"       value="$(arg confidence)"/>
+        <param name="LRchecktresh"     value="$(arg LRchecktresh)"/>
+        <param name="monoResolution"   value="$(arg monoResolution)"/>
+    </node>     -->
+
+    <!-- <node name="stereo_image_proc" pkg="stereo_image_proc" type="stereo_image_proc" output="screen" required="true">
+        <param name="approximate_sync" value="true"/>
+        <param name="queue_size" value="100"/>
+    </node> -->
+
+	<!-- lidar -->
+	<node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
+		<param name="ip_address" value=""/> 
+		<param name="serial_port" value="/dev/ttyACM0"/>
+		<param name="serial_baudframe" value="115200"/>
+		<param name="frame_id" value="oak-d_frame"/>
+		<param name="calibrate_time" value="true"/>
+		<param name="publish_intensity" value="false"/>
+		<param name="publish_multiecho" value="false"/>
+		<param name="angle_min" value="-1.5707963"/>
+		<param name="angle_max" value="1.5707963"/>
+	</node>
+
+    <node type="frontend" name="frontend" pkg="vilo" >
+        <param name="cam_params" value="$(arg cam_params)"/>
+    <node/>
+
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find vilo)/launch/vilo.rviz" />
+
+</launch>

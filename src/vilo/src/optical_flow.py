@@ -11,7 +11,7 @@ import rospy
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
-#TODO should take ;eft and right image at once
+#TODO should take left and right image at once
 class OpticalFlowTracker:
     def __init__(self):
         self.old_gray = None

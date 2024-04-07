@@ -15,7 +15,7 @@ Joint optimization
 """
 
 """
-EKF
+EKF for lidar+ stereo estimate
 """
 
 """
